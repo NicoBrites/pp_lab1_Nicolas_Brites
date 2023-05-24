@@ -2,7 +2,7 @@ import json
 import re
 import os
 
-def leer_archivo(string_de_archivo_json):
+def leer_archivo(string_de_archivo_json:str):
     '''
     La funcion lee un json y lo devuelve como una lista
     Recibe: una direccion de donde se encuentra el archivo
@@ -23,6 +23,7 @@ def imprimir_menu():
     '''
     mensaje = "\
     A) Mostrar la lista de todos los jugadores del Dream Team.\n\
+    B) Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas.\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -42,7 +43,7 @@ def menu_principal_parcial():
         return -1
 
 
-def parcial_app(lista_jugadores):
+def parcial_app(lista_jugadores:list):
     '''
     La función inicia la app
     Recibe: La lista de personajes
@@ -58,6 +59,7 @@ def parcial_app(lista_jugadores):
             lista_exportar_CSV = listar_jugadores(lista_jugadores)
             flag = 1
         elif opcion == "B":
+            lista_exportar_CSV = seleccionar_jugador(lista_jugadores)
             flag = 2
         elif opcion == "C":
             flag = 3
@@ -83,12 +85,12 @@ def clear_console() -> None:
 # Nombre Jugador - Posición. Ejemplo:
 # Michael Jordan - Escolta
 
-def listar_jugadores(lista_jugadores):
+def listar_jugadores(lista_jugadores:list):
 
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
     lista_retorno = []
-    indice = 0
+    indice = 1
     for jugadores in lista_para_trabajar:
 
         print("{0}) {1} - {2}".format(indice, jugadores["nombre"], jugadores["posicion"]))
@@ -100,20 +102,65 @@ def listar_jugadores(lista_jugadores):
 #  promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, 
 # robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
-# def seleccionar_jugador(lista_jugadores):
+def asignador_indices(indice:str):
+
+    # valor
+    # if indice == 1:
+        pass
+
+
+
+
+
+
+def seleccionar_jugador(lista_jugadores):
      
-#      while True:
-#         opcion = input("Ingrese el indice del jugador (antes listado, de 1 a 13):") # QUE FORMATO ???
-#         if re.match(r"[0-9]{2}$",opcion):
-#             if opcion >= 0 or opcion < 14:
-#                 for indice in range(lista_jugadores):
-#                     if indice == opcion:
-                        
+    while True:
+        opcion = input("Ingrese el indice del jugador (antes listado, de 0 a 13):") # QUE FORMATO ???
+        if opcion.isdigit() and (int(opcion) >=0 and int(opcion) <13):
 
-#             else:
-#                 print("No existe el indice ingresado")
-#         else:
-#             print("Formato invalido. Intente de nuevo.")
+            for indice in range(len(lista_jugadores)):
+                if indice+1 == int(opcion):
+                    
+                    mensaje = "\
+    {0} \n\
+    Temporadas : {1}\n\
+    Puntos totales: {2}\n\
+    Promedio puntos por partido: {3}\n\
+    Rebotes totales: {4}\n\
+    Promedio rebotes por partido: {5}\n\
+    Asistencias totales: {6}\n\
+    Promedio asistencias por partido: {7}\n\
+    Robos totales: {8}\n\
+    Bloqueos totales: {9}\n\
+    Porcentaje_tiros_de_campo: {10}\n\
+    Porcentaje_tiros_libres: {11}\n\
+    Porcentaje_tiros_triples: {12}"
+                    mensaje = mensaje.format(lista_jugadores[indice]["nombre"], lista_jugadores[indice]["estadisticas"]["temporadas"],
+                                            lista_jugadores[indice]["estadisticas"]["puntos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_puntos_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["rebotes_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_rebotes_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["asistencias_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_asistencias_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["robos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["bloqueos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_de_campo"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_libres"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_triples"], end= "\n") 
+                    print(mensaje)
+            break
+        else:
+            print("Formato invalido o no existe el indice. Intente de nuevo.")
 
-# parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
+    
+# Después de mostrar las estadísticas de un jugador seleccionado por el usuario,
+#  permite al usuario guardar las estadísticas de ese jugador en un archivo CSV.
+#  El archivo CSV debe contener los siguientes campos: nombre, posición, temporadas,
+#  puntos totales, promedio de puntos por partido, rebotes totales, promedio de rebotes por partido,
+#  asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
+# porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
+    
+
+parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
 
