@@ -86,7 +86,11 @@ def clear_console() -> None:
 # Michael Jordan - Escolta
 
 def listar_jugadores(lista_jugadores:list):
-
+    '''
+    Muestra por consola la lista de jugadores en el formato pedido
+    Recibe una lista de jugadores
+    devuelve nada, solo imprime
+    '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
     lista_retorno = []
@@ -102,19 +106,13 @@ def listar_jugadores(lista_jugadores:list):
 #  promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, 
 # robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
-def asignador_indices(indice:str):
-
-    # valor
-    # if indice == 1:
-        pass
-
-
-
-
-
 
 def seleccionar_jugador(lista_jugadores):
-     
+    '''
+    Muestra las estadisticas completas de un jugador, el cual lo ingresa el usuario
+    Recibe una lista de jugadores
+    devuelve nada, solo imprime
+    '''
     while True:
         opcion = input("Ingrese el indice del jugador (antes listado, de 0 a 13):") # QUE FORMATO ???
         if opcion.isdigit() and (int(opcion) >=0 and int(opcion) <13):
