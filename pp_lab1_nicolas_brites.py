@@ -23,10 +23,6 @@ def imprimir_menu():
     '''
     mensaje = "\
     A) Mostrar la lista de todos los jugadores del Dream Team.\n\
-    B) Calcular y mostrar la cantidad de juegos de una década determinada, la misma será ingresada por el usuario por pantalla.\n\
-    C) Listar los juegos ordenados por Empresa. Preguntar al usuario si lo quiere ordenar de manera ascendente (‘asc’) o descendente („desc‟).\n\
-    D) Buscar juegos por modo [multijugador, cooperativo] y listar en consola los que cumplan dicha búsqueda. (Usando RegEx).\n\
-    E) Exportar a CSV la lista de juegos según opción 1 o 3.\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -62,16 +58,12 @@ def parcial_app(lista_jugadores):
             lista_exportar_CSV = listar_jugadores(lista_jugadores)
             flag = 1
         elif opcion == "B":
-            #lista_exportar_CSV = cantidad_juegos_decada(lista_jueguitos)
             flag = 2
         elif opcion == "C":
-           # lista_exportar_CSV = ordenar_juegos_empresa(lista_jueguitos)
             flag = 3
         elif opcion == "D":
             pass
-          #  lista_exportar_CSV = buscar_juegos_por_modo(lista_jueguitos)
-        elif opcion == "E":
-           # exportar_CSV(lista_exportar_CSV, flag)  
+        elif opcion == "E": 
             pass
         elif opcion == "Z":
             break
@@ -108,20 +100,20 @@ def listar_jugadores(lista_jugadores):
 #  promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, 
 # robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
-def seleccionar_jugador(lista_jugadores):
+# def seleccionar_jugador(lista_jugadores):
      
-     while True:
-        opcion = input("Ingrese el indice del jugador (antes listado, de 1 a 13):") # QUE FORMATO ???
-        if re.match(r"[0-9]{2}$",opcion):
-            if opcion >= 0 or opcion < 14:
-                for indice in range(lista_jugadores):
-                    if indice == opcion:
+#      while True:
+#         opcion = input("Ingrese el indice del jugador (antes listado, de 1 a 13):") # QUE FORMATO ???
+#         if re.match(r"[0-9]{2}$",opcion):
+#             if opcion >= 0 or opcion < 14:
+#                 for indice in range(lista_jugadores):
+#                     if indice == opcion:
                         
 
-            else:
-                print("No existe el indice ingresado")
-        else:
-            print("Formato invalido. Intente de nuevo.")
+#             else:
+#                 print("No existe el indice ingresado")
+#         else:
+#             print("Formato invalido. Intente de nuevo.")
 
-parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
+# parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
 
