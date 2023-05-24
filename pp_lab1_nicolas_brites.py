@@ -24,6 +24,8 @@ def imprimir_menu():
     mensaje = "\
     A) Mostrar la lista de todos los jugadores del Dream Team.\n\
     B) Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas.\n\
+    C) Después de mostrar las estadísticas de un jugador seleccionado por el usuario, permite al usuario\n\
+    guardar las estadísticas de ese jugador en un archivo CSV.\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -50,19 +52,16 @@ def parcial_app(lista_jugadores:list):
     Devuelve: la ejecucion del programa en si, eligiendo que hacer en el menu
     '''
 
-    lista_exportar_CSV = []
-    flag = 0
+    exportar_CSV = ""
     while True:
         opcion = menu_principal_parcial()
 
         if opcion == "A":
-            lista_exportar_CSV = listar_jugadores(lista_jugadores)
-            flag = 1
+            listar_jugadores(lista_jugadores)
         elif opcion == "B":
-            lista_exportar_CSV = seleccionar_jugador(lista_jugadores)
-            flag = 2
+            exportar_CSV = seleccionar_jugador(lista_jugadores)
         elif opcion == "C":
-            flag = 3
+            guardar_estadisticas_csv(exportar_CSV)
         elif opcion == "D":
             pass
         elif opcion == "E": 
@@ -85,11 +84,11 @@ def clear_console() -> None:
 # Nombre Jugador - Posición. Ejemplo:
 # Michael Jordan - Escolta
 
-def listar_jugadores(lista_jugadores:list):
+def listar_jugadores(lista_jugadores:list) -> str:
     '''
     Muestra por consola la lista de jugadores en el formato pedido
     Recibe una lista de jugadores
-    devuelve nada, solo imprime
+    devuelve un string con los datos para imprimir el csv
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
@@ -147,9 +146,27 @@ def seleccionar_jugador(lista_jugadores):
                                             lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_libres"],
                                             lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_triples"], end= "\n") 
                     print(mensaje)
+                    
+                    imprimir_csv = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
+                    imprimir_csv = imprimir_csv.format(lista_jugadores[indice]["nombre"],lista_jugadores[indice]["posicion"],
+                                            lista_jugadores[indice]["estadisticas"]["temporadas"],
+                                            lista_jugadores[indice]["estadisticas"]["puntos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_puntos_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["rebotes_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_rebotes_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["asistencias_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["promedio_asistencias_por_partido"],
+                                            lista_jugadores[indice]["estadisticas"]["robos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["bloqueos_totales"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_de_campo"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_libres"],
+                                            lista_jugadores[indice]["estadisticas"]["porcentaje_tiros_triples"])
+
             break
         else:
             print("Formato invalido o no existe el indice. Intente de nuevo.")
+
+    return imprimir_csv
 
     
 # Después de mostrar las estadísticas de un jugador seleccionado por el usuario,
@@ -159,6 +176,27 @@ def seleccionar_jugador(lista_jugadores):
 #  asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
 # porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
     
+def guardar_estadisticas_csv(exportar_CSV):
+    '''
+    Guarda la info pedida en formato csv
+    Recibe un string con los datos para exportar
+    devuelve Nada
+    '''
+    if exportar_CSV != "":
+        exportar_CSV_separado = exportar_CSV.split(",")
+        nombre_de_archivo = "{0}.csv".format(exportar_CSV_separado[0])
+
+        # if len(exportar_CSV) != 0 or nombre_de_archivo != -1:
+        #     nombre_de_archivo_csv_guardar = "./SEGUNDO PARCIAL/{0}".format(nombre_de_archivo)
+        with open(nombre_de_archivo, "w") as archivo:
+                archivo.write(exportar_CSV)
+     
+    else:
+        print("Todavia seleccionaste un jugador en el punto anterior")    
+
+
+
+
 
 parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
 
