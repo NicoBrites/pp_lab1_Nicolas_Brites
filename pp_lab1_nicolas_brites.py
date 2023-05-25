@@ -29,6 +29,8 @@ def imprimir_menu():
     C) Después de mostrar las estadísticas de un jugador seleccionado por el usuario, permite al usuario\n\
     guardar las estadísticas de ese jugador en un archivo CSV.\n\
     D)Permitir al usuario buscar un jugador por su nombre y mostrar sus logros\n\
+    E)Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team,\n\
+    ordenado por nombre de manera ascendente.\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -68,7 +70,7 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "D":
             buscar_logros_por_nombre(lista_jugadores)
         elif opcion == "E": 
-            pass
+            calcular_y_mostrar_promedios(lista_jugadores)
         elif opcion == "Z":
             break
         else:
@@ -241,7 +243,56 @@ def imprimir_logros_jugadores(jugadores):
 
 # Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, ordenado por nombre de manera ascendente.   
 
+def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up = True , longitud_nombre = False):
+    '''
+    El algoritmo de ordenamiento, recibe una lista y varios parametros y los ordena en orden dependiendo los parametros ingresado,
+    Si es up seria de mayor a menor o viceversa y longitud es si cuenta los caracteres del string o no
+    recibe una lista de cosas, una clave para saber que clave del dicc comparar, up es un bool y log nombre es un bool
+    devuelve Nada, ( la funcion solo ordena )
+    '''
+    rango_a = len(lista)
+    flag_swap = True
 
+
+    while(flag_swap):
+        flag_swap = False
+        rango_a = rango_a - 1
+
+        for indice_A in range(rango_a):
+            if up == True and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
+               ) > float(lista[indice_A+1][clave][clave_estadisticas]) \
+                or up == False and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
+                 ) < float(lista[indice_A+1][clave][clave_estadisticas]):
+                lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
+                flag_swap = True
+
+            if up == True and longitud_nombre == True and len(lista[indice_A][clave][clave_estadisticas]
+                ) > len(lista[indice_A+1][clave][clave_estadisticas])\
+                or up == False and longitud_nombre == True and len(lista[indice_A][clave][clave_estadisticas]
+                  ) < len(lista[indice_A+1][clave][clave_estadisticas]):
+                lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
+                flag_swap = True
+
+def calcular_y_mostrar_promedios(lista_jugadores):
+
+    lista_para_trabajar = []
+    lista_para_trabajar = lista_jugadores[:]
+    acumulador = 0
+
+    for jugador in lista_para_trabajar:
+        valor = jugador["estadisticas"]["promedio_puntos_por_partido"]
+        acumulador += valor
+
+    promedio = acumulador / len(lista_para_trabajar)
+
+    print("El promedio total de puntos por partido de todo el Dream Team es : {0}".format(round(promedio,2)))
+    print("Y el promedio de cada jugador ordenado de manera ascendente es:")
+
+    ivan_sort_diccionarios_promedios(lista_para_trabajar,"estadisticas", "promedio_puntos_por_partido", True, False)
+
+    for jugador in lista_para_trabajar:
+        print("{0}  | Promedio de puntos por partido: {1}".format(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"]))
+    
 
 parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
 
