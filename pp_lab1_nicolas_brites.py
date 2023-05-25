@@ -31,6 +31,11 @@ def imprimir_menu():
     D)Permitir al usuario buscar un jugador por su nombre y mostrar sus logros\n\
     E)Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team,\n\
     ordenado por nombre de manera ascendente.\n\
+    F)Permitir al usuario ingresar el nombre de un jugador y \n\
+    mostrar si ese jugador es miembro del Salón de la Fama del Baloncesto.\n\
+    G)Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.\n\
+    H)Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.\n\
+    I)Calcular y mostrar el jugador con el mayor porcentaje de asistencias totales.\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -71,6 +76,14 @@ def parcial_app(lista_jugadores:list):
             buscar_logros_por_nombre(lista_jugadores)
         elif opcion == "E": 
             calcular_y_mostrar_promedios(lista_jugadores)
+        elif opcion == "F": 
+            buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = True)
+        elif opcion == "G": 
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "rebotes_totales")
+        elif opcion == "H": 
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "porcentaje_tiros_de_campo")
+        elif opcion == "I": 
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "asistencias_totales")
         elif opcion == "Z":
             break
         else:
@@ -89,7 +102,7 @@ def clear_console() -> None:
 # Nombre Jugador - Posición. Ejemplo:
 # Michael Jordan - Escolta
 
-def listar_jugadores(lista_jugadores:list) -> str:
+def listar_jugadores(lista_jugadores:list) -> str:   #1
     '''
     Muestra por consola la lista de jugadores en el formato pedido
     Recibe una lista de jugadores
@@ -111,7 +124,7 @@ def listar_jugadores(lista_jugadores:list) -> str:
 # robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
 
-def seleccionar_jugador(lista_jugadores):
+def seleccionar_jugador(lista_jugadores): #2
     '''
     Muestra las estadisticas completas de un jugador, el cual lo ingresa el usuario
     Recibe una lista de jugadores
@@ -181,7 +194,7 @@ def seleccionar_jugador(lista_jugadores):
 #  asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
 # porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
     
-def guardar_estadisticas_csv(exportar_CSV):
+def guardar_estadisticas_csv(exportar_CSV): #3
     '''
     Guarda la info pedida en formato csv
     Recibe un string con los datos para exportar
@@ -204,7 +217,7 @@ def guardar_estadisticas_csv(exportar_CSV):
 #  como campeonatos de la NBA, participaciones en el All-Star y pertenencia
 #  al Salón de la Fama del Baloncesto, etc.
 
-def buscar_logros_por_nombre(lista_jugadores):
+def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
     '''
     Le pide al usuario ingresar un nombre y mostar los logros del jugador que pide
     Recibe una lista de jugadores
@@ -217,12 +230,19 @@ def buscar_logros_por_nombre(lista_jugadores):
     while True:
         opcion = input("Ingrese el nombre del jugador: ") # QUE FORMATO ???
         for jugadores in lista_para_trabajar:
-
             if re.match(r"(Michael|Jordan|Magic|Johnson|Larry|Bird|Scottie|Pippen|David|\
                         Robinson|Patrick|Ewing|Karl|Malone|John|Stockton|Clyde|Drexler|\
-                        Chris|MullinChristian|Laettner)",opcion.capitalize()):
+                        Chris|MullinChristian|Laettner)",opcion.capitalize()
+                        )and salon_de_la_fama == False:
                 if opcion.capitalize() in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif re.match(r"(Michael|Jordan|Magic|Johnson|Larry|Bird|Scottie|Pippen|David|\
+                        Robinson|Patrick|Ewing|Karl|Malone|John|Stockton|Clyde|Drexler|\
+                        Chris|MullinChristian|Laettner)",opcion.capitalize()
+                        )and salon_de_la_fama == True:
+                if opcion.capitalize() in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores, True)
                     flag_break = 1
             else:
                 print("Escribio cualquier cosa, escriba el nombre de un jugador.")
@@ -231,19 +251,23 @@ def buscar_logros_por_nombre(lista_jugadores):
         if flag_break == 1:
             break 
                 
-def imprimir_logros_jugadores(jugadores):
+def imprimir_logros_jugadores(jugadores, salon_de_la_fama = False): # 4 y 6
     '''
     imprime los logros del jugador pedido (ahorra 3 lineas de codigo por jugador al ejercicio anterior)
     Recibe una lista de jugadores
     devuelve Nada, solo imprime
     '''
-    retorno = "\n".join(jugadores["logros"])
+    if salon_de_la_fama == False:
+        retorno = "\n".join(jugadores["logros"])
+    else:
+        retorno = jugadores["logros"][-1]
     print(jugadores["nombre"])
     print(retorno)  
 
+
 # Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, ordenado por nombre de manera ascendente.   
 
-def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up = True , longitud_nombre = False):
+def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up = True , longitud_nombre = False): #SORT PARA EL 5 , 6 , 7 , 8 , 9
     '''
     El algoritmo de ordenamiento, recibe una lista y varios parametros y los ordena en orden dependiendo los parametros ingresado,
     Si es up seria de mayor a menor o viceversa y longitud es si cuenta los caracteres del string o no
@@ -273,7 +297,7 @@ def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:
                 lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
                 flag_swap = True
 
-def calcular_y_mostrar_promedios(lista_jugadores):
+def calcular_y_mostrar_promedios(lista_jugadores): # 5
 
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
@@ -294,5 +318,36 @@ def calcular_y_mostrar_promedios(lista_jugadores):
         print("{0}  | Promedio de puntos por partido: {1}".format(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"]))
     
 
+
+#Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
+#Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
+#Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
+
+
+def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 8 y 9
+
+    lista_para_trabajar = []
+    lista_para_trabajar = lista_jugadores[:] 
+
+    if clave_estadistica == "rebotes_totales":
+        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "rebotes_totales", False, False)
+
+        print("{0} | Rebotes totales : {1}".format(lista_para_trabajar[0]["nombre"],
+                                                    lista_para_trabajar[0]["estadisticas"]["rebotes_totales"]))
+    elif clave_estadistica == "porcentaje_tiros_de_campo":
+        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "porcentaje_tiros_de_campo", False, False)
+
+        print("{0} | Porcentaje de tiros de campo : {1}".format(lista_para_trabajar[0]["nombre"],
+                                                    lista_para_trabajar[0]["estadisticas"]["porcentaje_tiros_de_campo"]))
+    elif clave_estadistica == "asistencias_totales":
+        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "asistencias_totales", False, False)
+
+        print("{0} | Asistencias totales : {1}".format(lista_para_trabajar[0]["nombre"],
+                                                    lista_para_trabajar[0]["estadisticas"]["asistencias_totales"]))
+
+
+
 parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
+
+
 
