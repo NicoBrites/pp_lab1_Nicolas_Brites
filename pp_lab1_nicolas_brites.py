@@ -52,6 +52,8 @@ def imprimir_menu():
     R)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido\n\
     un porcentaje de tiros triples superior a ese valor.\n\
     S)Calcular y mostrar el jugador con la mayor cantidad de temporadas.\n\
+    T)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido\n\
+    un porcentaje de tiros de campo superior a ese valor.\n\
     Z) Salir de la aplicacion.\
     ______________________________________________________________________________________\
     "
@@ -119,7 +121,9 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "R": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_triples")   
         elif opcion == "S": 
-             calcular_y_mostrar_jugador_mayor(lista_jugadores, "temporadas")             
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "temporadas")    
+        elif opcion == "T": 
+            mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_de_campo")                       
         elif opcion == "Z":
             break
         else:
@@ -432,16 +436,25 @@ def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 
 #Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más asistencias por partido que ese valor.
 #Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
 #Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros triples superior a ese valor.
+#Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
 
 
-def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10, 11, 12 , 15 , 18
+def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10, 11, 12 , 15 , 18, 20
     '''
     Imprime a los jugadores que han promediado mas puntos o pórcentaje que el valor ingresado por el usuario
+    y si es porcentaje de tiros de campo devuelve a todos los jugadores ordenados por pocision
     recibe una lista y un string con la clave de la estadistica a evaluar
     devuelve Nada, Solo imprime el jugador y la estadistica solicitada
+    
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
+    lista_base = []
+    lista_escolta = []
+    lista_alero = []
+    lista_ala_pivot = []
+    lista_pivot = []
+    lista_posicion_de_cancha = []
 
     while True:
         opcion = input("Ingrese un promedio de puntos por partido :") 
@@ -467,9 +480,32 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10,
                     if jugador["estadisticas"]["porcentaje_tiros_triples"] > float(opcion):
                         print("{0} | Porcentaje de tiros triples: {1}".format(jugador["nombre"],
                                 jugador["estadisticas"]["porcentaje_tiros_triples"]))
+                elif clave == "porcentaje_tiros_de_campo":
+                    if jugador["estadisticas"]["porcentaje_tiros_de_campo"] > float(opcion):
+                        if jugador["posicion"] == "Base":
+                            lista_base.append(jugador)
+                        if jugador["posicion"] == "Escolta":
+                            lista_escolta.append(jugador)
+                        if jugador["posicion"] == "Alero":
+                            lista_alero.append(jugador)
+                        if jugador["posicion"] == "Ala-Pivot":
+                            lista_ala_pivot.append(jugador)
+                        if jugador["posicion"] == "Pivot":
+                            lista_pivot.append(jugador)
             break
         else:
             print("No ingreso un promedio.")   
+    
+    if clave == "porcentaje_tiros_de_campo":
+        lista_posicion_de_cancha.extend(lista_base)
+        lista_posicion_de_cancha.extend(lista_escolta)
+        lista_posicion_de_cancha.extend(lista_alero)
+        lista_posicion_de_cancha.extend(lista_ala_pivot)
+        lista_posicion_de_cancha.extend(lista_pivot)
+        for jugador in lista_posicion_de_cancha:
+            print("{0} | Porcentaje tiros de campo: {1}".format(jugador["nombre"],
+                                jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
+        
 
 
 parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
