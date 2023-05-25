@@ -2,6 +2,8 @@ import json
 import re
 import os
 
+#NOMBRE:NICOLAS BRITES
+
 def leer_archivo(string_de_archivo_json:str):
     '''
     La funcion lee un json y lo devuelve como una lista
@@ -9,10 +11,10 @@ def leer_archivo(string_de_archivo_json:str):
     Devuelve: el archivo transformado a lista
     '''
     lista= []
-    with open(string_de_archivo_json, "r") as archivo:
+    with open(string_de_archivo_json, "r", encoding='utf-8') as archivo:
         dict = json.load(archivo)
         lista = dict["jugadores"]
-
+ 
     return lista
 
 def imprimir_menu():
@@ -26,6 +28,7 @@ def imprimir_menu():
     B) Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas.\n\
     C) Después de mostrar las estadísticas de un jugador seleccionado por el usuario, permite al usuario\n\
     guardar las estadísticas de ese jugador en un archivo CSV.\n\
+    D)Permitir al usuario buscar un jugador por su nombre y mostrar sus logros\n\
     Z) Salir de la aplicacion.\
     _____________________________________________________________________________________________________________________\
     "
@@ -63,7 +66,7 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "C":
             guardar_estadisticas_csv(exportar_CSV)
         elif opcion == "D":
-            pass
+            buscar_jugador_por_nombre(lista_jugadores)
         elif opcion == "E": 
             pass
         elif opcion == "Z":
@@ -92,7 +95,7 @@ def listar_jugadores(lista_jugadores:list) -> str:
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
-    lista_retorno = []
+
     indice = 1
     for jugadores in lista_para_trabajar:
 
@@ -194,6 +197,90 @@ def guardar_estadisticas_csv(exportar_CSV):
     else:
         print("Todavia seleccionaste un jugador en el punto anterior")    
 
+
+# Permitir al usuario buscar un jugador por su nombre y mostrar sus logros,
+#  como campeonatos de la NBA, participaciones en el All-Star y pertenencia
+#  al Salón de la Fama del Baloncesto, etc.
+
+def buscar_jugador_por_nombre(lista_jugadores):
+    '''
+    Le pide al usuario ingresar un nombre y mostar los logros del jugador que pide
+    Recibe una lista de jugadores
+    devuelve Nada, solo imprime
+    '''
+    lista_para_trabajar = []
+    lista_para_trabajar = lista_jugadores[:]
+    flag_break = 0
+
+    while True:
+        opcion = input("Ingrese el nombre del jugador: ") # QUE FORMATO ???
+        for jugadores in lista_para_trabajar:
+            if re.match(r"(Michael|Jordan)",opcion.capitalize()):
+                if "Michael" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Magic|Johnson)",opcion.capitalize()):
+                if "Magic" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1   
+            elif  re.match(r"(Larry|Bird)",opcion.capitalize()):
+                if "Larry" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Charles|Barkley)",opcion.capitalize()):
+                if "Charles" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Scottie|Pippen)",opcion.capitalize()):
+                if "Scottie" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores) 
+                    flag_break = 1                   
+            elif  re.match(r"(David|Robinson)",opcion.capitalize()):
+                if "David" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Patrick|Ewing)",opcion.capitalize()):
+                if "Patrick" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Karl|Malone)",opcion.capitalize()):
+                if "Karl" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(John|Stockton)",opcion.capitalize()):
+                if "John" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Clyde|Drexler)",opcion.capitalize()):
+                if "Clyde" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)
+                    flag_break = 1
+            elif  re.match(r"(Chris|Mullin)",opcion.capitalize()):
+                if "Chris" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)  
+                    flag_break = 1         
+            elif  re.match(r"(Christian|Laettner)",opcion.capitalize()):
+                if "Christian" in jugadores["nombre"]:
+                    imprimir_logros_jugadores(jugadores)  
+                    flag_break = 1
+            else:
+                print("Escribio cualquier cosa, escriba el nombre de un jugador.")
+                break
+
+        if flag_break == 1:
+            break 
+                
+def imprimir_logros_jugadores(jugadores):
+    '''
+    imprime los logros del jugador pedido (ahorra 3 lineas de codigo por jugador al ejercicio anterior)
+    Recibe una lista de jugadores
+    devuelve Nada, solo imprime
+    '''
+    retorno = "\n".join(jugadores["logros"])
+    print(jugadores["nombre"])
+    print(retorno)  
+
+# Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, ordenado por nombre de manera ascendente. 
 
 
 
