@@ -131,7 +131,7 @@ def seleccionar_jugador(lista_jugadores): #2
     devuelve nada, solo imprime
     '''
     while True:
-        opcion = input("Ingrese el indice del jugador (antes listado, de 0 a 13):") # QUE FORMATO ???
+        opcion = input("Ingrese el indice del jugador (antes listado, de 0 a 13):")
         if opcion.isdigit() and (int(opcion) >=0 and int(opcion) <13):
 
             for indice in range(len(lista_jugadores)):
@@ -220,7 +220,7 @@ def guardar_estadisticas_csv(exportar_CSV): #3
 def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
     '''
     Le pide al usuario ingresar un nombre y mostar los logros del jugador que pide
-    Recibe una lista de jugadores
+    Recibe una lista de jugadores y un bool para buscar solo el logro del salon de la fama o no
     devuelve Nada, solo imprime
     '''
     lista_para_trabajar = []
@@ -228,7 +228,7 @@ def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
     flag_break = 0
 
     while True:
-        opcion = input("Ingrese el nombre del jugador: ") # QUE FORMATO ???
+        opcion = input("Ingrese el nombre del jugador: ") 
         for jugadores in lista_para_trabajar:
             if re.match(r"(Michael|Jordan|Magic|Johnson|Larry|Bird|Scottie|Pippen|David|\
                         Robinson|Patrick|Ewing|Karl|Malone|John|Stockton|Clyde|Drexler|\
@@ -271,7 +271,8 @@ def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:
     '''
     El algoritmo de ordenamiento, recibe una lista y varios parametros y los ordena en orden dependiendo los parametros ingresado,
     Si es up seria de mayor a menor o viceversa y longitud es si cuenta los caracteres del string o no
-    recibe una lista de cosas, una clave para saber que clave del dicc comparar, up es un bool y log nombre es un bool
+    recibe una lista de cosas, una clave para saber que clave del dicc comparar, una clave del dicc estadistica,
+    up es un bool y log nombre es un bool.
     devuelve Nada, ( la funcion solo ordena )
     '''
     rango_a = len(lista)
@@ -298,7 +299,11 @@ def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:
                 flag_swap = True
 
 def calcular_y_mostrar_promedios(lista_jugadores): # 5
-
+    '''
+    calcula el promedio total de puntos por partido de todo el dream team y ordena a los jugadores por promedio individual
+    recibe una lista 
+    devuelve Nada, Solo imprime el promedio total y la lista de jugadores en orden
+    '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:]
     acumulador = 0
@@ -325,7 +330,11 @@ def calcular_y_mostrar_promedios(lista_jugadores): # 5
 
 
 def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 8 y 9
-
+    '''
+    Calcula y muestra al jugador con mayor cantidad de la estadistica ingresada
+    recibe una lista y un string con la clave de la estadistica a evaluar
+    devuelve Nada, Solo imprime el jugador y la estadistica solicitada
+    '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
 
@@ -344,6 +353,9 @@ def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 
 
         print("{0} | Asistencias totales : {1}".format(lista_para_trabajar[0]["nombre"],
                                                     lista_para_trabajar[0]["estadisticas"]["asistencias_totales"]))
+
+#Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
+
 
 
 
