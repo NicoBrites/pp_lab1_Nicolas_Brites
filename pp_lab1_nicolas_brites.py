@@ -91,17 +91,17 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "C":
             guardar_estadisticas_csv(exportar_CSV)
         elif opcion == "D":
-            buscar_logros_por_nombre(lista_jugadores)
+            buscar_logros_por_nombre(lista_jugadores, False)
         elif opcion == "E": 
             calcular_y_mostrar_promedios(lista_jugadores)
         elif opcion == "F": 
             buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = True)
         elif opcion == "G": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "rebotes_totales")
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "", "rebotes_totales")
         elif opcion == "H": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "porcentaje_tiros_de_campo")
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "", "porcentaje_tiros_de_campo" )
         elif opcion == "I": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "asistencias_totales")
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "", "asistencias_totales")
         elif opcion == "J": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "promedio_puntos_por_partido")
         elif opcion == "K": 
@@ -109,15 +109,15 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "L": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "promedio_asistencias_por_partido")
         elif opcion == "M": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "robos_totales")
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "", "robos_totales")
         elif opcion == "N": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "bloqueos_totales")   
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "" , "bloqueos_totales")   
         elif opcion == "O": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_libres")    
         elif opcion == "P": 
             calcular_y_mostrar_promedios(lista_jugadores, True)  
         elif opcion == "Q": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "logros") 
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "logros", "") 
         elif opcion == "R": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_triples")   
         elif opcion == "S": 
@@ -171,8 +171,8 @@ def seleccionar_jugador(lista_jugadores): #2
     devuelve nada, solo imprime
     '''
     while True:
-        opcion = input("Ingrese el indice del jugador (antes listado, de 0 a 13):")
-        if opcion.isdigit() and (int(opcion) >=0 and int(opcion) <13):
+        opcion = input("Ingrese el indice del jugador (antes listado, de 1 a 12):")
+        if opcion.isdigit() and (int(opcion) >=1 and int(opcion) <1):
 
             for indice in range(len(lista_jugadores)):
                 if indice+1 == int(opcion):
@@ -269,19 +269,20 @@ def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
 
     while True:
         opcion = input("Ingrese el nombre del jugador: ") 
+        opcion = opcion.lower()
+        opcion = opcion.capitalize()
         for jugadores in lista_para_trabajar:
-            if re.match(r"(Michael|Jordan|Magic|Johnson|Larry|Bird|Scottie|Pippen|David|\
-                        Robinson|Patrick|Ewing|Karl|Malone|John|Stockton|Clyde|Drexler|\
-                        Chris|MullinChristian|Laettner)",opcion.capitalize()
-                        )and salon_de_la_fama == False:
-                if opcion.capitalize() in jugadores["nombre"]:
+            if salon_de_la_fama == False and re.match(r"(Michael|Jordan|Magic|Johnson|Larry|\
+                    Bird|Scottie|Pippen|David|Robinson|Patrick|Ewing|Karl|Malone|John|\
+                    Stockton|Clyde|Drexler|Chris|MullinChristian|Laettner)",opcion):
+                if opcion in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores)
                     flag_break = 1
-            elif re.match(r"(Michael|Jordan|Magic|Johnson|Larry|Bird|Scottie|Pippen|David|\
-                        Robinson|Patrick|Ewing|Karl|Malone|John|Stockton|Clyde|Drexler|\
-                        Chris|MullinChristian|Laettner)",opcion.capitalize()
-                        )and salon_de_la_fama == True:
-                if opcion.capitalize() in jugadores["nombre"]:
+                    break
+            elif salon_de_la_fama == True and re.match(r"(Michael|Jordan|Magic|Johnson|Larry|\
+                    Bird|Scottie|Pippen|David|Robinson|Patrick|Ewing|Karl|Malone|John|\
+                    Stockton|Clyde|Drexler|Chris|MullinChristian|Laettner)",opcion):
+                if opcion in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores, True)
                     flag_break = 1
             else:
@@ -290,7 +291,8 @@ def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
 
         if flag_break == 1:
             break 
-                
+
+
 def imprimir_logros_jugadores(jugadores, salon_de_la_fama = False): # 4 y 6
     '''
     imprime los logros del jugador pedido (ahorra 3 lineas de codigo por jugador al ejercicio anterior)
@@ -326,17 +328,17 @@ def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:
         rango_a = rango_a - 1
 
         for indice_A in range(rango_a):
-            if up == True and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
+            if clave_estadisticas!= "" and up == True and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
                ) > float(lista[indice_A+1][clave][clave_estadisticas]) \
                 or up == False and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
                  ) < float(lista[indice_A+1][clave][clave_estadisticas]):
                 lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
                 flag_swap = True
 
-            if up == True and longitud_nombre == True and len(lista[indice_A][clave]
-                ) > len(lista[indice_A+1][clave])\
-                or up == False and longitud_nombre == True and len(lista[indice_A][clave]
-                  ) < len(lista[indice_A+1][clave]):
+            if clave_estadisticas== "" and up == True and longitud_nombre == False and lista[indice_A][clave]\
+                > lista[indice_A+1][clave] \
+                or clave_estadisticas== "" and up == False and longitud_nombre == False and lista[indice_A][clave]\
+                < lista[indice_A+1][clave]:
                 lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
                 flag_swap = True
 
@@ -369,9 +371,9 @@ def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 
     if excluir_jugador == False:
 
         print("El promedio total de puntos por partido de todo el Dream Team es : {0}".format(round(promedio,2)))
-        print("Y el promedio de cada jugador ordenado de manera ascendente es:")
+        print("Y el promedio de cada jugador ordenado por nombre de manera ascendente es:")
 
-        ivan_sort_diccionarios_promedios(lista_para_trabajar,"estadisticas", "promedio_puntos_por_partido", True, False)
+        ivan_sort_diccionarios_promedios(lista_para_trabajar,"nombre", "", True, False)
 
         for jugador in lista_para_trabajar:
             print("{0}  | Promedio de puntos por partido: {1}".format(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"]))
@@ -385,7 +387,7 @@ def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 
 #Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
 
 
-def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 8 , 9 , 13 , 14, 17 , 19
+def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave, clave_estadistica): # 7 , 8 , 9 , 13 , 14, 17 , 19
     '''
     Calcula y muestra al jugador con mayor cantidad de la estadistica ingresada
     recibe una lista y un string con la clave de la estadistica a evaluar
@@ -394,42 +396,50 @@ def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave_estadistica): # 7 , 
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
 
-    if clave_estadistica == "rebotes_totales":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "rebotes_totales", False, False)
 
-        print("{0} | Rebotes totales : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["rebotes_totales"]))
-    elif clave_estadistica == "porcentaje_tiros_de_campo":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "porcentaje_tiros_de_campo", False, False)
+    if clave == "": 
+        indice = calcular_mayor(lista_jugadores,"", clave_estadistica)
 
-        print("{0} | Porcentaje de tiros de campo : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["porcentaje_tiros_de_campo"]))
-    elif clave_estadistica == "asistencias_totales":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "asistencias_totales", False, False)
+        respuesta_formateada = formato_respuestas(clave_estadistica)
+        print("{0} | {1} : {2}".format(lista_para_trabajar[indice]["nombre"], respuesta_formateada,
+                                                    lista_para_trabajar[indice]["estadisticas"][clave_estadistica]))   
+    else :
+        indice = calcular_mayor(lista_jugadores,clave, clave_estadistica)
+        print("{0} | Cantidad de logros : {1}".format(lista_para_trabajar[indice]["nombre"],
+                                                    len(lista_para_trabajar[indice][clave])))
+ 
 
-        print("{0} | Asistencias totales : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["asistencias_totales"]))
-    elif clave_estadistica == "robos_totales":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "robos_totales", False, False)
+def calcular_mayor(lista_jugadores,clave, clave_estadistica):
+    '''
+    Calcula al jugador de la lista que tiene el valor mayor en la clave determinada
+    Recibe una lista de jugadores, una clave y una clave estadistica
+    Devuelve el indice del jugador con el valor mas alto
+    '''
+    lista_para_trabajar = []
+    lista_para_trabajar = lista_jugadores[:] 
 
-        print("{0} | Robos Totales : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["robos_totales"]))
-    elif clave_estadistica == "bloqueos_totales":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "bloqueos_totales", False, False)
+    for indice in range(len(lista_para_trabajar)):
+        if clave == "":
+            dato_string = lista_para_trabajar[indice]["estadisticas"][clave_estadistica]
+            dato_float = float(dato_string)
+            if (indice == 0 or float(lista_para_trabajar[maximo_alto_indice]["estadisticas"][clave_estadistica]) < dato_float):
+                maximo_alto_indice = indice
+        else :
+            dato_float = len(lista_para_trabajar[indice][clave])
+            if (indice == 0 or len(lista_para_trabajar[maximo_alto_indice][clave]) < dato_float):
+                maximo_alto_indice = indice
+    return maximo_alto_indice
 
-        print("{0} | Bloqueos Totales : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["bloqueos_totales"]))
-    elif clave_estadistica == "logros":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "logros", "", False, True)
+def formato_respuestas(clave_estadistica):
+    '''
+    Prepara el formato de una clave para imprimirse bonito
+    recibe la clave a modificar
+    devuelve la clave modificada
+    '''
+    respuesta_formateada = clave_estadistica.capitalize()
+    respuesta_formateada = respuesta_formateada.replace("_", " ")
 
-        print("{0} | Cantidad de logros : {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    len(lista_para_trabajar[0]["logros"])))
-    elif clave_estadistica == "temporadas":
-        ivan_sort_diccionarios_promedios(lista_para_trabajar, "estadisticas", "temporadas", False, False)
-
-        print("{0} | Temporadas: {1}".format(lista_para_trabajar[0]["nombre"],
-                                                    lista_para_trabajar[0]["estadisticas"]["temporadas"]))
-    
+    return respuesta_formateada
 
 #Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
 #Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más rebotes por partido que ese valor.
@@ -449,6 +459,32 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10,
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
+
+
+    while True:
+        opcion = input("Ingrese un promedio/porcentaje a evaluar :") 
+        if re.match(r"^[0-9\.\,]{1,5}$",opcion) and (float(opcion)<100 and float(opcion)>0) :
+            if clave != "porcentaje_tiros_de_campo":
+                for jugador in lista_para_trabajar:
+                    opcion_float = float(opcion)
+                    filtar_jugador_mayor(jugador, opcion_float, clave)
+                break
+            if clave == "porcentaje_tiros_de_campo":
+                filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores, opcion)
+        else:
+            print("No ingreso un promedio.") 
+      
+
+def filtar_jugador_mayor(jugador, opcion, clave_estadistica):
+
+    respuesta_formateada = formato_respuestas(clave_estadistica)
+
+    if jugador["estadisticas"][clave_estadistica] > opcion:
+        print("{0} | {1} : {2}".format(jugador["nombre"], respuesta_formateada,
+                                                    jugador["estadisticas"][clave_estadistica]))   
+
+def filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores, opcion):
+
     lista_base = []
     lista_escolta = []
     lista_alero = []
@@ -456,32 +492,8 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10,
     lista_pivot = []
     lista_posicion_de_cancha = []
 
-    while True:
-        opcion = input("Ingrese un promedio de puntos por partido :") 
-        if re.match(r"^[0-9\.\,]{1,5}$",opcion) and (float(opcion)<100 and float(opcion)>0) :
-            for jugador in lista_para_trabajar:
-                if clave == "promedio_puntos_por_partido":
-                    if jugador["estadisticas"]["promedio_puntos_por_partido"] > float(opcion):
-                        print("{0} | Promedio puntos por partido: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["promedio_puntos_por_partido"]))
-                elif clave == "promedio_rebotes_por_partido":
-                    if jugador["estadisticas"]["promedio_rebotes_por_partido"] > float(opcion):
-                        print("{0} | Promedio rebotes por partido: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["promedio_rebotes_por_partido"]))
-                elif clave == "promedio_asistencias_por_partido":
-                    if jugador["estadisticas"]["promedio_asistencias_por_partido"] > float(opcion):
-                        print("{0} | Promedio asistencias por partido: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["promedio_asistencias_por_partido"]))
-                elif clave == "porcentaje_tiros_libres":
-                    if jugador["estadisticas"]["porcentaje_tiros_libres"] > float(opcion):
-                        print("{0} | Porcentaje de tiros libres: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["porcentaje_tiros_libres"]))
-                elif clave == "porcentaje_tiros_triples":
-                    if jugador["estadisticas"]["porcentaje_tiros_triples"] > float(opcion):
-                        print("{0} | Porcentaje de tiros triples: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["porcentaje_tiros_triples"]))
-                elif clave == "porcentaje_tiros_de_campo":
-                    if jugador["estadisticas"]["porcentaje_tiros_de_campo"] > float(opcion):
+    for jugador in lista_jugadores:
+       if jugador["estadisticas"]["porcentaje_tiros_de_campo"] > float(opcion):
                         if jugador["posicion"] == "Base":
                             lista_base.append(jugador)
                         if jugador["posicion"] == "Escolta":
@@ -491,21 +503,16 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10,
                         if jugador["posicion"] == "Ala-Pivot":
                             lista_ala_pivot.append(jugador)
                         if jugador["posicion"] == "Pivot":
-                            lista_pivot.append(jugador)
-            break
-        else:
-            print("No ingreso un promedio.")   
+                            lista_pivot.append(jugador) 
     
-    if clave == "porcentaje_tiros_de_campo":
-        lista_posicion_de_cancha.extend(lista_base)
-        lista_posicion_de_cancha.extend(lista_escolta)
-        lista_posicion_de_cancha.extend(lista_alero)
-        lista_posicion_de_cancha.extend(lista_ala_pivot)
-        lista_posicion_de_cancha.extend(lista_pivot)
-        for jugador in lista_posicion_de_cancha:
-            print("{0} | Porcentaje tiros de campo: {1}".format(jugador["nombre"],
-                                jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
-        
+    lista_posicion_de_cancha.extend(lista_base)
+    lista_posicion_de_cancha.extend(lista_escolta)
+    lista_posicion_de_cancha.extend(lista_alero)
+    lista_posicion_de_cancha.extend(lista_ala_pivot)
+    lista_posicion_de_cancha.extend(lista_pivot)
+    for jugador in lista_posicion_de_cancha:
+        print("{0} | {1} | Porcentaje tiros de campo: {2}".format(jugador["nombre"],
+                jugador["posicion"], jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
 
 
 parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
