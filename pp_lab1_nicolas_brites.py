@@ -121,7 +121,7 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "R": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_triples")   
         elif opcion == "S": 
-            calcular_y_mostrar_jugador_mayor(lista_jugadores, "temporadas")    
+            calcular_y_mostrar_jugador_mayor(lista_jugadores,"" , "temporadas")    
         elif opcion == "T": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_de_campo")                       
         elif opcion == "Z":
@@ -164,7 +164,7 @@ def listar_jugadores(lista_jugadores:list) -> str:   #1
 # robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
 
 
-def seleccionar_jugador(lista_jugadores): #2
+def seleccionar_jugador(lista_jugadores:list): #2
     '''
     Muestra las estadisticas completas de un jugador, el cual lo ingresa el usuario
     Recibe una lista de jugadores
@@ -172,7 +172,7 @@ def seleccionar_jugador(lista_jugadores): #2
     '''
     while True:
         opcion = input("Ingrese el indice del jugador (antes listado, de 1 a 12):")
-        if opcion.isdigit() and (int(opcion) >=1 and int(opcion) <1):
+        if opcion.isdigit() and (int(opcion) >=1 and int(opcion) <13):
 
             for indice in range(len(lista_jugadores)):
                 if indice+1 == int(opcion):
@@ -234,7 +234,7 @@ def seleccionar_jugador(lista_jugadores): #2
 #  asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
 # porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
     
-def guardar_estadisticas_csv(exportar_CSV): #3
+def guardar_estadisticas_csv(exportar_CSV:str): #3
     '''
     Guarda la info pedida en formato csv
     Recibe un string con los datos para exportar
@@ -244,8 +244,6 @@ def guardar_estadisticas_csv(exportar_CSV): #3
         exportar_CSV_separado = exportar_CSV.split(",")
         nombre_de_archivo = "{0}.csv".format(exportar_CSV_separado[0])
 
-        # if len(exportar_CSV) != 0 or nombre_de_archivo != -1:
-        #     nombre_de_archivo_csv_guardar = "./SEGUNDO PARCIAL/{0}".format(nombre_de_archivo)
         with open(nombre_de_archivo, "w") as archivo:
                 archivo.write(exportar_CSV)
      
@@ -257,7 +255,7 @@ def guardar_estadisticas_csv(exportar_CSV): #3
 #  como campeonatos de la NBA, participaciones en el All-Star y pertenencia
 #  al Salón de la Fama del Baloncesto, etc.
 
-def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
+def buscar_logros_por_nombre(lista_jugadores:list, salon_de_la_fama:bool = False):# 4 y 6
     '''
     Le pide al usuario ingresar un nombre y mostar los logros del jugador que pide
     Recibe una lista de jugadores y un bool para buscar solo el logro del salon de la fama o no
@@ -293,7 +291,7 @@ def buscar_logros_por_nombre(lista_jugadores, salon_de_la_fama = False):# 4 y 6
             break 
 
 
-def imprimir_logros_jugadores(jugadores, salon_de_la_fama = False): # 4 y 6
+def imprimir_logros_jugadores(jugadores:dict, salon_de_la_fama:bool = False): # 4 y 6
     '''
     imprime los logros del jugador pedido (ahorra 3 lineas de codigo por jugador al ejercicio anterior)
     Recibe una lista de jugadores
@@ -311,12 +309,12 @@ def imprimir_logros_jugadores(jugadores, salon_de_la_fama = False): # 4 y 6
 # Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
   
 
-def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up = True , longitud_nombre = False): #SORT PARA EL 5 , 6 , 7 , 8 , 9
+def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up:bool = True): #SORT PARA EL 5 , 6 , 7 , 8 , 9
     '''
     El algoritmo de ordenamiento, recibe una lista y varios parametros y los ordena en orden dependiendo los parametros ingresado,
-    Si es up seria de mayor a menor o viceversa y longitud es si cuenta los caracteres del string o no
+    Si es up seria de mayor a menor o viceversa 
     recibe una lista de cosas, una clave para saber que clave del dicc comparar, una clave del dicc estadistica,
-    up es un bool y log nombre es un bool.
+    up es un bool 
     devuelve Nada, ( la funcion solo ordena )
     '''
     rango_a = len(lista)
@@ -328,21 +326,21 @@ def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:
         rango_a = rango_a - 1
 
         for indice_A in range(rango_a):
-            if clave_estadisticas!= "" and up == True and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
+            if clave_estadisticas!= "" and up == True and  float(lista[indice_A][clave][clave_estadisticas]
                ) > float(lista[indice_A+1][clave][clave_estadisticas]) \
-                or up == False and longitud_nombre == False and float(lista[indice_A][clave][clave_estadisticas]
+                or up == False and  float(lista[indice_A][clave][clave_estadisticas]
                  ) < float(lista[indice_A+1][clave][clave_estadisticas]):
                 lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
                 flag_swap = True
 
-            if clave_estadisticas== "" and up == True and longitud_nombre == False and lista[indice_A][clave]\
+            if clave_estadisticas== "" and up == True and  lista[indice_A][clave]\
                 > lista[indice_A+1][clave] \
-                or clave_estadisticas== "" and up == False and longitud_nombre == False and lista[indice_A][clave]\
+                or clave_estadisticas== "" and up == False and  lista[indice_A][clave]\
                 < lista[indice_A+1][clave]:
                 lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
                 flag_swap = True
 
-def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 , 16
+def calcular_y_mostrar_promedios(lista_jugadores:list, excluir_jugador:bool = False): # 5 , 16
     '''
     calcula el promedio total de puntos por partido de todo el dream team y ordena a los jugadores por promedio individual 
     si no hay que excluir al jugador con menor puntaje, si hay que excluirlo solo imprime el prom total sin el jugador exluido
@@ -355,7 +353,7 @@ def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 
     acumulador = 0
 
     if excluir_jugador == True:
-        ivan_sort_diccionarios_promedios(lista_para_trabajar,"estadisticas", "promedio_puntos_por_partido", True, False)
+        ivan_sort_diccionarios_promedios(lista_para_trabajar,"estadisticas", "promedio_puntos_por_partido", True)
         lista_para_trabajar.pop(0)
 
     for jugador in lista_para_trabajar:
@@ -373,7 +371,7 @@ def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 
         print("El promedio total de puntos por partido de todo el Dream Team es : {0}".format(round(promedio,2)))
         print("Y el promedio de cada jugador ordenado por nombre de manera ascendente es:")
 
-        ivan_sort_diccionarios_promedios(lista_para_trabajar,"nombre", "", True, False)
+        ivan_sort_diccionarios_promedios(lista_para_trabajar,"nombre", "", True)
 
         for jugador in lista_para_trabajar:
             print("{0}  | Promedio de puntos por partido: {1}".format(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"]))
@@ -387,7 +385,7 @@ def calcular_y_mostrar_promedios(lista_jugadores, excluir_jugador = False): # 5 
 #Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
 
 
-def calcular_y_mostrar_jugador_mayor(lista_jugadores, clave, clave_estadistica): # 7 , 8 , 9 , 13 , 14, 17 , 19
+def calcular_y_mostrar_jugador_mayor(lista_jugadores:list, clave:str, clave_estadistica:str): # 7 , 8 , 9 , 13 , 14, 17 , 19
     '''
     Calcula y muestra al jugador con mayor cantidad de la estadistica ingresada
     recibe una lista y un string con la clave de la estadistica a evaluar
@@ -449,7 +447,7 @@ def formato_respuestas(clave_estadistica):
 #Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
 
 
-def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10, 11, 12 , 15 , 18, 20
+def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores:list, clave:str): # 10, 11, 12 , 15 , 18, 20
     '''
     Imprime a los jugadores que han promediado mas puntos o pórcentaje que el valor ingresado por el usuario
     y si es porcentaje de tiros de campo devuelve a todos los jugadores ordenados por pocision
@@ -464,27 +462,36 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, clave): # 10,
     while True:
         opcion = input("Ingrese un promedio/porcentaje a evaluar :") 
         if re.match(r"^[0-9\.\,]{1,5}$",opcion) and (float(opcion)<100 and float(opcion)>0) :
+            opcion_float = float(opcion)
             if clave != "porcentaje_tiros_de_campo":
                 for jugador in lista_para_trabajar:
-                    opcion_float = float(opcion)
                     filtar_jugador_mayor(jugador, opcion_float, clave)
                 break
-            if clave == "porcentaje_tiros_de_campo":
+            if clave == "porcentaje_tiros_de_campo":   
                 filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores, opcion)
+                break
         else:
             print("No ingreso un promedio.") 
       
 
-def filtar_jugador_mayor(jugador, opcion, clave_estadistica):
-
+def filtar_jugador_mayor(jugador:dict, opcion:float, clave_estadistica:str):
+    '''
+    Filtra si los jugadores superan el valor de la opcion en la clave solicitada
+    recibe un dicc de un jugador, un float y un string con la clave estadistica
+    devuelve nada, solo imprime
+    '''
     respuesta_formateada = formato_respuestas(clave_estadistica)
 
     if jugador["estadisticas"][clave_estadistica] > opcion:
         print("{0} | {1} : {2}".format(jugador["nombre"], respuesta_formateada,
                                                     jugador["estadisticas"][clave_estadistica]))   
 
-def filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores, opcion):
-
+def filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores:list, opcion:float):
+    '''
+    filtra a los jugadores que sean mayor que la opcion y los imprime ordenados por posicion
+    recibe la lista de jugadores y un float opcion
+    devuelve nada, solo imprime
+    '''
     lista_base = []
     lista_escolta = []
     lista_alero = []
