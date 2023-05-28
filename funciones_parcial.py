@@ -54,6 +54,7 @@ def imprimir_menu():
     S)Calcular y mostrar el jugador con la mayor cantidad de temporadas.\n\
     T)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido\n\
     un porcentaje de tiros de campo superior a ese valor.\n\
+    U)BONUS BONUS BONUS\n\
     Z) Salir de la aplicacion.\
     ______________________________________________________________________________________\
     "
@@ -123,7 +124,9 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "S": 
             calcular_y_mostrar_jugador_mayor(lista_jugadores,"" , "temporadas")    
         elif opcion == "T": 
-            mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_de_campo")                       
+            mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_de_campo")     
+        elif opcion == "U":
+            bonus_bonus_bonus(lista_jugadores)                 
         elif opcion == "Z":
             break
         else:
@@ -276,7 +279,7 @@ def buscar_logros_por_nombre(lista_jugadores:list, salon_de_la_fama:bool = False
                 if opcion in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores)
                     flag_break = 1
-                    break
+
             elif salon_de_la_fama == True and re.match(r"(Michael|Jordan|Magic|Johnson|Larry|\
                     Bird|Scottie|Pippen|David|Robinson|Patrick|Ewing|Karl|Malone|John|\
                     Stockton|Clyde|Drexler|Chris|MullinChristian|Laettner)",opcion):
@@ -397,10 +400,15 @@ def calcular_y_mostrar_jugador_mayor(lista_jugadores:list, clave:str, clave_esta
 
     if clave == "": 
         indice = calcular_mayor(lista_jugadores,"", clave_estadistica)
-
-        respuesta_formateada = formato_respuestas(clave_estadistica)
-        print("{0} | {1} : {2}".format(lista_para_trabajar[indice]["nombre"], respuesta_formateada,
-                                                    lista_para_trabajar[indice]["estadisticas"][clave_estadistica]))   
+        if type(indice) == list:
+            for indices in indice:
+                respuesta_formateada = formato_respuestas(clave_estadistica)
+                print("{0} | {1} : {2}".format(lista_para_trabajar[indices]["nombre"], respuesta_formateada,
+                                                        lista_para_trabajar[indices]["estadisticas"][clave_estadistica]))       
+        else:
+            respuesta_formateada = formato_respuestas(clave_estadistica)
+            print("{0} | {1} : {2}".format(lista_para_trabajar[indice]["nombre"], respuesta_formateada,
+                                                        lista_para_trabajar[indice]["estadisticas"][clave_estadistica]))   
     else :
         indice = calcular_mayor(lista_jugadores,clave, clave_estadistica)
         print("{0} | Cantidad de logros : {1}".format(lista_para_trabajar[indice]["nombre"],
@@ -416,6 +424,8 @@ def calcular_mayor(lista_jugadores,clave, clave_estadistica):
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
 
+    lista_jugadores_maximos_mismo_valor = []
+
     for indice in range(len(lista_para_trabajar)):
         if clave == "":
             dato_string = lista_para_trabajar[indice]["estadisticas"][clave_estadistica]
@@ -426,7 +436,19 @@ def calcular_mayor(lista_jugadores,clave, clave_estadistica):
             dato_float = len(lista_para_trabajar[indice][clave])
             if (indice == 0 or len(lista_para_trabajar[maximo_alto_indice][clave]) < dato_float):
                 maximo_alto_indice = indice
-    return maximo_alto_indice
+
+    if clave == "":
+        lista_jugadores_maximos_mismo_valor.append(maximo_alto_indice)
+        for indice in range(len(lista_para_trabajar)):
+            dato_string = lista_para_trabajar[indice]["estadisticas"][clave_estadistica]
+            dato_float = float(dato_string)
+            if indice != maximo_alto_indice and lista_para_trabajar[maximo_alto_indice]["estadisticas"][clave_estadistica] == dato_float:
+                lista_jugadores_maximos_mismo_valor.append(indice)
+    
+    if len(lista_jugadores_maximos_mismo_valor) > 1:
+        return lista_jugadores_maximos_mismo_valor
+    else:
+        return maximo_alto_indice
 
 def formato_respuestas(clave_estadistica):
     '''
@@ -457,7 +479,6 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores:list, clave:st
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
-
 
     while True:
         opcion = input("Ingrese un promedio/porcentaje a evaluar :") 
@@ -521,8 +542,40 @@ def filtar_jugador_mayor_ordenado_por_posicion(lista_jugadores:list, opcion:floa
         print("{0} | {1} | Porcentaje tiros de campo: {2}".format(jugador["nombre"],
                 jugador["posicion"], jugador["estadisticas"]["porcentaje_tiros_de_campo"]))
 
+def bonus_bonus_bonus(lista_jugadores):
+    '''
+    BONUS BONUS, CREA UN CSV CON EL NOMBRE DE JUGADOR Y AL LADO LA POCISION DEPENDIENDO INDICE DE PUNTOS,
+    REBOTES, ASISTENCIA Y ROBO,muy god
+    recibe lista de jugadores
+    devuelve nada, solo exporta csv
+    '''
+    lista_para_sacar_indices_puntos = lista_jugadores[:] 
+    lista_para_sacar_indices_rebotes = lista_jugadores[:] 
+    lista_para_sacar_indices_asistencias = lista_jugadores[:] 
+    lista_para_sacar_indices_robos = lista_jugadores[:] 
 
-parcial_app(leer_archivo(r"C:\Users\AdministraGod\Downloads\dt.json"))
+    ivan_sort_diccionarios_promedios(lista_para_sacar_indices_puntos , "estadisticas", "puntos_totales", False)
+    ivan_sort_diccionarios_promedios(lista_para_sacar_indices_rebotes , "estadisticas", "rebotes_totales", False)
+    ivan_sort_diccionarios_promedios(lista_para_sacar_indices_asistencias , "estadisticas", "asistencias_totales", False)
+    ivan_sort_diccionarios_promedios(lista_para_sacar_indices_robos , "estadisticas", "robos_totales", False)
+
+    csv_exportar = ""
+
+    for indice_puntos in range(len(lista_para_sacar_indices_puntos)):
+        for indice_rebotes in range(len(lista_para_sacar_indices_rebotes)):
+            for indice_asistencias in range(len(lista_para_sacar_indices_asistencias)):
+                for indice_robos in range(len(lista_para_sacar_indices_robos)):
+                    for jugadores in lista_jugadores:
+                        if jugadores["nombre"] == lista_para_sacar_indices_puntos[indice_puntos]["nombre"]:
+                            if jugadores["nombre"] == lista_para_sacar_indices_rebotes[indice_rebotes]["nombre"]:
+                                if jugadores["nombre"] == lista_para_sacar_indices_asistencias[indice_asistencias]["nombre"]:
+                                    if jugadores["nombre"] == lista_para_sacar_indices_robos[indice_robos]["nombre"]:
+                                        csv_exportar += "{0},{1},{2},{3},{4}\n".format(jugadores["nombre"], indice_puntos+1,indice_rebotes+1,indice_asistencias+1,indice_robos+1)
+
+    with open("BONUS GOD DERECHITO PAL EXCEL.csv", "w") as archivo:
+        archivo.write(csv_exportar)
+
+
 
 
 
