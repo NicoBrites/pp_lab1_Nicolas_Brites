@@ -141,10 +141,6 @@ def clear_console() -> None:
     _ = input('Press a key to continue...')
     os.system('cls')
 
-# Mostrar la lista de todos los jugadores del Dream Team. Con el formato:
-# Nombre Jugador - Posición. Ejemplo:
-# Michael Jordan - Escolta
-
 def listar_jugadores(lista_jugadores:list) -> str:   #1
     '''
     Muestra por consola la lista de jugadores en el formato pedido
@@ -159,13 +155,6 @@ def listar_jugadores(lista_jugadores:list) -> str:   #1
 
         print("{0}) {1} - {2}".format(indice, jugadores["nombre"], jugadores["posicion"]))
         indice += 1
-
-
-# Permitir al usuario seleccionar un jugador por su índice y mostrar sus estadísticas completas,
-#  incluyendo temporadas jugadas, puntos totales, promedio de puntos por partido, rebotes totales,
-#  promedio de rebotes por partido, asistencias totales, promedio de asistencias por partido, 
-# robos totales, bloqueos totales, porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
-
 
 def seleccionar_jugador(lista_jugadores:list): #2
     '''
@@ -228,14 +217,6 @@ def seleccionar_jugador(lista_jugadores:list): #2
             print("Formato invalido o no existe el indice. Intente de nuevo.")
 
     return imprimir_csv
-
-    
-# Después de mostrar las estadísticas de un jugador seleccionado por el usuario,
-#  permite al usuario guardar las estadísticas de ese jugador en un archivo CSV.
-#  El archivo CSV debe contener los siguientes campos: nombre, posición, temporadas,
-#  puntos totales, promedio de puntos por partido, rebotes totales, promedio de rebotes por partido,
-#  asistencias totales, promedio de asistencias por partido, robos totales, bloqueos totales, 
-# porcentaje de tiros de campo, porcentaje de tiros libres y porcentaje de tiros triples.
     
 def guardar_estadisticas_csv(exportar_CSV:str): #3
     '''
@@ -253,10 +234,6 @@ def guardar_estadisticas_csv(exportar_CSV:str): #3
     else:
         print("Todavia seleccionaste un jugador en el punto anterior")    
 
-
-# Permitir al usuario buscar un jugador por su nombre y mostrar sus logros,
-#  como campeonatos de la NBA, participaciones en el All-Star y pertenencia
-#  al Salón de la Fama del Baloncesto, etc.
 
 def buscar_logros_por_nombre(lista_jugadores:list, salon_de_la_fama:bool = False):# 4 y 6
     '''
@@ -307,10 +284,6 @@ def imprimir_logros_jugadores(jugadores:dict, salon_de_la_fama:bool = False): # 
     print(jugadores["nombre"])
     print(retorno)  
 
-
-# Calcular y mostrar el promedio de puntos por partido de todo el equipo del Dream Team, ordenado por nombre de manera ascendente. 
-# Calcular y mostrar el promedio de puntos por partido del equipo excluyendo al jugador con la menor cantidad de puntos por partido.
-  
 
 def ivan_sort_diccionarios_promedios(lista:list , clave:str, clave_estadisticas:str, up:bool = True): #SORT PARA EL 5 , 6 , 7 , 8 , 9
     '''
@@ -379,14 +352,6 @@ def calcular_y_mostrar_promedios(lista_jugadores:list, excluir_jugador:bool = Fa
         for jugador in lista_para_trabajar:
             print("{0}  | Promedio de puntos por partido: {1}".format(jugador["nombre"], jugador["estadisticas"]["promedio_puntos_por_partido"]))
         
-
-
-#Calcular y mostrar el jugador con la mayor cantidad de rebotes totales.
-#Calcular y mostrar el jugador con el mayor porcentaje de tiros de campo.
-#Calcular y mostrar el jugador con la mayor cantidad de asistencias totales.
-#Calcular y mostrar el jugador con la mayor cantidad de logros obtenidos
-#Calcular y mostrar el jugador con la mayor cantidad de temporadas jugadas
-
 
 def calcular_y_mostrar_jugador_mayor(lista_jugadores:list, clave:str, clave_estadistica:str): # 7 , 8 , 9 , 13 , 14, 17 , 19
     '''
@@ -460,13 +425,6 @@ def formato_respuestas(clave_estadistica):
     respuesta_formateada = respuesta_formateada.replace("_", " ")
 
     return respuesta_formateada
-
-#Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más puntos por partido que ese valor.
-#Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más rebotes por partido que ese valor.
-#Permitir al usuario ingresar un valor y mostrar los jugadores que han promediado más asistencias por partido que ese valor.
-#Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros libres superior a ese valor.
-#Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido un porcentaje de tiros triples superior a ese valor.
-#Permitir al usuario ingresar un valor y mostrar los jugadores , ordenados por posición en la cancha, que hayan tenido un porcentaje de tiros de campo superior a ese valor.
 
 
 def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores:list, clave:str): # 10, 11, 12 , 15 , 18, 20
