@@ -252,14 +252,14 @@ def buscar_logros_por_nombre(lista_jugadores:list, salon_de_la_fama:bool = False
         for jugadores in lista_para_trabajar:
             if salon_de_la_fama == False and re.match(r"(Michael|Jordan|Magic|Johnson|Larry|\
                     Bird|Scottie|Pippen|David|Robinson|Patrick|Ewing|Karl|Malone|John|\
-                    Stockton|Clyde|Drexler|Chris|MullinChristian|Laettner)",opcion):
+                    Stockton|Clyde|Drexler|Chris|Mullin|Christian|Laettner)",opcion):
                 if opcion in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores)
                     flag_break = 1
 
             elif salon_de_la_fama == True and re.match(r"(Michael|Jordan|Magic|Johnson|Larry|\
                     Bird|Scottie|Pippen|David|Robinson|Patrick|Ewing|Karl|Malone|John|\
-                    Stockton|Clyde|Drexler|Chris|MullinChristian|Laettner)",opcion):
+                    Stockton|Clyde|Drexler|Chris|Mullin|Christian|Laettner)",opcion):
                 if opcion in jugadores["nombre"]:
                     imprimir_logros_jugadores(jugadores, True)
                     flag_break = 1
