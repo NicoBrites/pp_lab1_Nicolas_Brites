@@ -55,6 +55,10 @@ def imprimir_menu():
     T)Permitir al usuario ingresar un valor y mostrar los jugadores que hayan tenido\n\
     un porcentaje de tiros de campo superior a ese valor.\n\
     U)BONUS BONUS BONUS\n\
+    V)EXTRA mostrar cantidad de jugadores por posicion\n\
+    W)EXTRA Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente.\n\
+    X)EXTRA Determinar qué jugador tiene las mejores estadísticas en cada valor.\n\
+    Y)EXTRA Determinar qué jugador tiene las mejores estadísticas de todos.\n\
     Z) Salir de la aplicacion.\
     ______________________________________________________________________________________\
     "
@@ -126,7 +130,15 @@ def parcial_app(lista_jugadores:list):
         elif opcion == "T": 
             mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores, "porcentaje_tiros_de_campo")     
         elif opcion == "U":
-            bonus_bonus_bonus(lista_jugadores)                 
+            bonus_bonus_bonus(lista_jugadores)         
+        elif opcion == "V":
+            extra_cantidad_por_posicion(lista_jugadores)     
+        elif opcion == "W":
+            extra_lista_cantidad_All_star(lista_jugadores)
+        elif opcion == "X":
+            extra_mejores_estadisticas(lista_jugadores)
+        elif opcion == "Y":
+            extra_mejores_estadisticas_de_todos(lista_jugadores)
         elif opcion == "Z":
             break
         else:
@@ -230,7 +242,8 @@ def guardar_estadisticas_csv(exportar_CSV:str): #3
 
         with open(nombre_de_archivo, "w") as archivo:
                 archivo.write(exportar_CSV)
-     
+
+        print("Se imprimio correctamente el archivo")
     else:
         print("Todavia seleccionaste un jugador en el punto anterior")    
 
@@ -433,7 +446,6 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores:list, clave:st
     y si es porcentaje de tiros de campo devuelve a todos los jugadores ordenados por pocision
     recibe una lista y un string con la clave de la estadistica a evaluar
     devuelve Nada, Solo imprime el jugador y la estadistica solicitada
-    
     '''
     lista_para_trabajar = []
     lista_para_trabajar = lista_jugadores[:] 
@@ -451,7 +463,7 @@ def mostrar_jugadores_mayor_promedio_al_ingresado(lista_jugadores:list, clave:st
                 break
         else:
             print("No ingreso un promedio.") 
-      
+                     
 
 def filtar_jugador_mayor(jugador:dict, opcion:float, clave_estadistica:str):
     '''
@@ -528,12 +540,131 @@ def bonus_bonus_bonus(lista_jugadores):
                             if jugadores["nombre"] == lista_para_sacar_indices_rebotes[indice_rebotes]["nombre"]:
                                 if jugadores["nombre"] == lista_para_sacar_indices_asistencias[indice_asistencias]["nombre"]:
                                     if jugadores["nombre"] == lista_para_sacar_indices_robos[indice_robos]["nombre"]:
-                                        csv_exportar += "{0},{1},{2},{3},{4}\n".format(jugadores["nombre"], indice_puntos+1,indice_rebotes+1,indice_asistencias+1,indice_robos+1)
+                                        csv_exportar += "{0},{1},{2},{3},{4}\n".format(jugadores["nombre"], \
+                                                        indice_puntos+1,indice_rebotes+1,indice_asistencias+1,indice_robos+1)
 
     with open("BONUS GOD DERECHITO PAL EXCEL.csv", "w") as archivo:
         archivo.write(csv_exportar)
 
 
+def extra_cantidad_por_posicion(lista_jugadores):
+    '''
+    Filtra a los jugadores por su posicion en la cancha y devuelve la cantuidad de cada uno
+    recibe, la lista de jugadores
+    retorna nada, solo imprime las cantidades
+    '''
+    lista_para_trabajar = lista_jugadores[:] 
+
+    contador_base = 0
+    contador_escolta= 0
+    contador_alero=0
+    contador_alapivot = 0
+    contador_pivot = 0
+
+    for jugador in lista_para_trabajar:
+        if jugador["posicion"] == "Base":
+            contador_base +=1
+        if jugador["posicion"] == "Escolta":
+            contador_escolta +=1
+        if jugador["posicion"] == "Alero":
+            contador_alero +=1
+        if jugador["posicion"] == "Ala-Pivot":
+            contador_alapivot +=1
+        if jugador["posicion"] == "Pivot":
+            contador_pivot +=1
+
+ 
+    print("Base : {0}".format(contador_base))
+    print("Escolta : {0}".format(contador_escolta))
+    print("Alero : {0}".format(contador_alero))
+    print("Ala-Pivot : {0}".format(contador_alapivot))
+    print("Pivot : {0}".format(contador_pivot))
+    
+
+def extra_lista_cantidad_All_star(lista_jugadores):
+    '''
+    Revisa los logros de todos los jugadores y los ordena segun la cantidad de veces que fueron All-star
+    Recibe, la lista de jugadores
+    Retorna, nada, solo imprime en orden de forma descendente
+    '''
+    lista_para_trabajar = lista_jugadores[:] 
+
+    for jugador in lista_para_trabajar:
+        if jugador["nombre"] ==  "Christian Laettner":
+            jugador["All-Star"]= 0
+            break
+        else:
+            for logros in jugador["logros"]:
+                if re.match(r"^[0-9]{1,2}( veces All-Star)$", logros):
+                    veces_allstar_split = logros.split(" ")
+                    veces_allstar = veces_allstar_split[0]
+                    jugador["All-Star"]= veces_allstar
+ 
+                    break
+
+    ivan_sort_diccionarios_extra_extras(lista_para_trabajar, "All-Star","", False)
+
+    for jugador in lista_para_trabajar:
+        print("{0} ({1} veces All-Star)".format(jugador["nombre"], jugador["All-Star"]))
 
 
+
+def ivan_sort_diccionarios_extra_extras(lista:list , clave:str, clave_estadisticas:str, up:bool = True): #SORT PARA EL 5 , 6 , 7 , 8 , 9
+    '''
+    El algoritmo de ordenamiento, recibe una lista y varios parametros y los ordena en orden dependiendo los parametros ingresado,
+    Si es up seria de mayor a menor o viceversa 
+    recibe una lista de cosas, una clave para saber que clave del dicc comparar, una clave del dicc estadistica,
+    up es un bool 
+    devuelve Nada, ( la funcion solo ordena )
+    '''
+    rango_a = len(lista)
+    flag_swap = True
+
+
+    while(flag_swap):
+        flag_swap = False
+        rango_a = rango_a - 1
+
+        for indice_A in range(rango_a):
+            if clave_estadisticas== "" and up == True and int(lista[indice_A][clave])\
+                > int(lista[indice_A+1][clave]) \
+                or clave_estadisticas== "" and up == False and  int(lista[indice_A][clave])\
+                < int(lista[indice_A+1][clave]):
+                lista[indice_A], lista[indice_A+1] = lista[indice_A+1], lista[indice_A]
+                flag_swap = True
+
+
+def extra_mejores_estadisticas(lista_jugadores):
+    '''
+    imprime a cada jugador que sea el mejor en cada una de las estadisticas
+    recibe, la lista de jugadores
+    retorna, nada solo imprime
+    '''
+    lista_para_trabajar = lista_jugadores[:] 
+
+    for jugadores in lista_para_trabajar:
+        for estadisticas in jugadores["estadisticas"]:
+            calcular_y_mostrar_jugador_mayor(lista_jugadores, "", estadisticas)
+
+
+def extra_mejores_estadisticas_de_todos(lista_jugadores):
+    '''
+    Busca al jugador con las mejores estadisticas de todos.
+    recibe la lista de jugadores
+    retorna nada, solo imprime al mejor    
+    '''
+    lista_para_trabajar = lista_jugadores[:] 
+
+
+    for indice in range(len(lista_para_trabajar)):
+        contador_mayor = 0
+        for estadisticas in lista_para_trabajar[indice]["estadisticas"]:
+            contador_mayor += int(lista_para_trabajar[indice]["estadisticas"][estadisticas])
+
+        lista_para_trabajar[indice]["Es mayor"] = contador_mayor
+
+    ivan_sort_diccionarios_extra_extras(lista_para_trabajar, "Es mayor", "", False)
+
+    print("El jugador que tiene mayor cantidad de mejores estadisticas es {0}, con {1} de puntos totales\
+           en todas las estadisticas.".format(lista_para_trabajar[0]["nombre"], lista_para_trabajar[0]["Es mayor"]))
 
